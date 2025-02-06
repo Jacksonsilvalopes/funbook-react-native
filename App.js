@@ -11,6 +11,7 @@ import { AddPost } from "./src/surfaces/AddPost";
 import { Favorites } from "./src/surfaces/Favorites";
 import { Profile } from "./src/surfaces/Profile";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const Stack = createNativeStackNavigator();
 // Atualizado
@@ -42,7 +43,9 @@ function Home() {
 
         },
         tabBarActiveTintColor: "#25A0B0",
-        tabBarActiveTintColor: "#000000",
+        tabBarInactiveTintColor: "#000000",
+        tabBarShowLabel: false,
+        headerTransparent: true,
       }
 
 
@@ -61,18 +64,21 @@ function Home() {
 export default function App() {
   const [userLoggedIn, setIsUserLoggedIn] = useState(true);
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {!userLoggedIn ? (
-          <Stack.Screen name="Login" component={Login} />
-        ) : (
-          <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{ headerShown: false }}
-          />
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          {!userLoggedIn ? (
+            <Stack.Screen name="Login" component={Login} />
+          ) : (
+            <Stack.Screen
+              name="Home"
+              component={Home}
+              options={{ headerShown: false }}
+            />
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
+
   );
 }
