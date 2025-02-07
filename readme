@@ -29,7 +29,9 @@ npx expo install expo-splash-screen
 
 npx expo install expo-font
 
+npx expo install @expo-google-fonts/poppins
 
 
+npx expo install expo-linear-gradient
 
 

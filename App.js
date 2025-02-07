@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
-import React, { useState } from "react";
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useState, useEffect } from "react";
+import { NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Login } from "./src/surfaces/Login"
@@ -15,19 +15,23 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Poppins_400Regular, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import AppLoading from "expo-app-loading";
+import { requestBase } from "./src/utils/constants";
+import { UserListContext } from "./src/context";
+
 
 
 // Atualizado 2
 SplashScreen.preventAutoHideAsync();
 
 const Stack = createNativeStackNavigator();
+
 // Atualizado 1
 const Tab = createBottomTabNavigator();
 
 function Home() {
   return (
-// Atualizado 1
+    // Atualizado 1
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
@@ -54,6 +58,16 @@ function Home() {
         tabBarInactiveTintColor: "#000000",
         tabBarShowLabel: false,
         headerTransparent: true,
+        headerTitleAlign: "left",
+        headerStyle: {
+          height: 160,
+        },
+        headerTitleStyle: {
+          textAlign: "left",
+          fontWeight: "bold",
+          fontFamily: "Poppins_700Bold",
+          fontSize: 24,
+        },
       }
 
 
@@ -73,42 +87,84 @@ function Home() {
 export default function App() {
 
   const [userLoggedIn, setIsUserLoggedIn] = useState(true);
-// Atualizado 2
+  const [userList, setUserList] = useState(true);
+
+  async function fetchUserData() {
+    const response = await fetch(requestBase + "/users.json");
+    setUserList(await response.json());
+  }
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+
+
+  if (!userList) {
+    return <AppLoading />;
+  }
+  
+  /*
+  async function fetchUserData() {
+    try {
+
+      const response = await fetch(requestBase + "/users.json");
+      const json = await response.json();
+
+      setUserList(json);
+    } catch (error) {
+      console.error(error);
+
+    } finally {
+      setIsUserLoggedIn(true);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  if (!userList && !error) {
+    return null;
+  }
+*/
+
+  // Atualizado 2
   const [loaded, error] = useFonts({
     'Poppins_Regular': Poppins_400Regular,
     'Poppins_Medium': Poppins_500Medium,
     'Poppins_Bold': Poppins_700Bold
   });
 
-// Atualizado 2
+  // Atualizado 2
   useEffect(() => {
     if (loaded || error) {
       SplashScreen.hideAsync();
     }
   }, [loaded, error]);
 
-// Atualizado 2
+  // Atualizado 2
   if (!loaded && !error) {
     return null;
   }
 
-
-
   return (
     <SafeAreaProvider >
-      <NavigationContainer>
-        <Stack.Navigator>
-          {!userLoggedIn ? (
-            <Stack.Screen name="Login" component={Login} />
-          ) : (
-            <Stack.Screen
-              name="Home"
+      <UserListContext.Provider value={{ userList: userList }} >
+        <NavigationContainer>
+          <Stack.Navigator>
+            {!userLoggedIn ? (
+              <Stack.Screen name="Login" component={Login} />
+            ) : (
+              <Stack.Screen
+              name='Home'
               component={Home}
               options={{ headerShown: false }}
-            />
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
+              />         
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </UserListContext.Provider>
     </SafeAreaProvider>
 
   );
