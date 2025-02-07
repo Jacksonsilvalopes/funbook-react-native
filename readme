@@ -19,9 +19,15 @@
 
 8 npx expo install react-dom react-native-web @expo/metro-runtime
 
+9 npx expo install expo-font
 
+10 yarn add @expo-google-fonts/poppins expo-font@~13.0.3 expo-app-loading
 
+https://dev.to/lucasm4sco/utilizando-fontes-com-expo-13gb
 
+npx expo install expo-splash-screen
+
+npx expo install expo-font
 
 
 

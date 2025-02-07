@@ -2,7 +2,6 @@ import "react-native-gesture-handler";
 import React, { useState } from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Login } from "./src/surfaces/Login"
 import { Feed } from "./src/surfaces/Feed";
@@ -12,20 +11,29 @@ import { Favorites } from "./src/surfaces/Favorites";
 import { Profile } from "./src/surfaces/Profile";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+// Atualizado 2
+import { Poppins_400Regular, Poppins_500Medium, Poppins_700Bold } from '@expo-google-fonts/poppins';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect } from 'react';
+
+
+// Atualizado 2
+SplashScreen.preventAutoHideAsync();
 
 const Stack = createNativeStackNavigator();
-// Atualizado
+// Atualizado 1
 const Tab = createBottomTabNavigator();
 
 function Home() {
   return (
-    // Atualizado
+// Atualizado 1
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           if (route.name === "Feed") {
-            iconName = focused ? "md-home" : "md-home-outline";
+            iconName = focused ? "home" : "home-outline";
           }
           else
             if (route.name === "Conversations") {
@@ -61,10 +69,33 @@ function Home() {
   );
 }
 
+
 export default function App() {
+
   const [userLoggedIn, setIsUserLoggedIn] = useState(true);
+// Atualizado 2
+  const [loaded, error] = useFonts({
+    'Poppins_Regular': Poppins_400Regular,
+    'Poppins_Medium': Poppins_500Medium,
+    'Poppins_Bold': Poppins_700Bold
+  });
+
+// Atualizado 2
+  useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, error]);
+
+// Atualizado 2
+  if (!loaded && !error) {
+    return null;
+  }
+
+
+
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider >
       <NavigationContainer>
         <Stack.Navigator>
           {!userLoggedIn ? (
