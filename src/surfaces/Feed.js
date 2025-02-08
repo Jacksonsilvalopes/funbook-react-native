@@ -13,8 +13,16 @@ export const Feed = () => {
 
     const headerHeight = useHeaderHeight();
     return (
-        <SafeAreaView style={{ flex: 1, paddingTop: headerHeight + 20, paddingHorizontal: 20 }}>
-            <View >
+        <SafeAreaView style={{ flex: 1, paddingTop: 80,paddingHorizontal: 20, backgroundColor: "rgba(255,255,255, 1)", }}>
+            <View 
+             style={{
+                backgroundColor: "rgba(255,255,255, 1)",
+                height: "100%",
+                width: "100%",
+                zIndex: 100,
+              }}
+            
+            >
                 <ListOfAvatars />
                 <ListOfCards />
             </View>

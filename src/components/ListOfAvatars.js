@@ -27,6 +27,7 @@ export const ListOfAvatars = () => {
                     zIndex: 100,
                     paddingVertical: 30,
                     paddingLeft: 20,
+                    paddingRight: 20,
                     backgroundColor: "rgba(255,255,255, 0.85)",
                 }}
                 >

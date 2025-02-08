@@ -1,5 +1,5 @@
 
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, FlatList } from 'react-native'
 import { requestBase } from "../utils/constants"
 import { Cards } from './Cards';
@@ -38,7 +38,7 @@ export const ListOfCards = () => {
         renderItem={renderItem}
         keyExtractor={(item) => item.itemId}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={<View style={{ height: 200 }} />}
+        ListHeaderComponent={<View style={{ height: 200}} />}
         snapToInterval={312}
         decelerationRate='fast'
       />
